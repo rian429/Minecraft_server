@@ -106,3 +106,5 @@
 [09:30:16] [Server thread/INFO]: /transfer <hostname> [<port>]
 [09:30:16] [Server thread/INFO]: /whitelist (on|off|list|add|remove|reload)
 [09:30:29] [Server thread/INFO]: An entity is required to run this command here
+[09:32:02] [Server thread/INFO]: Unknown or incomplete command, see below for error
+[09:32:02] [Server thread/INFO]: <--[HERE]
