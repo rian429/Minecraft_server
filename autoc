@@ -1,0 +1,8 @@
+#!/bin/bash
+
+while inotifywait -r -e modify,create,delete,move .; do
+  git add .
+  git diff --cached --quiet && continue
+  git commit -m "auto update"
+  git push
+done
