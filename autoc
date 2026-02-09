@@ -1,8 +1,42 @@
 #!/bin/bash
 
-while inotifywait -r -e modify,create,delete,move .; do
-  git add .
-  git diff --cached --quiet && continue
-  git commit -m "auto update"
-  git push
+# Interval in seconds between checks
+INTERVAL=60
+
+while true; do
+  echo "Checking for remote updates..."
+  # Fetch remote changes
+  git fetch origin
+
+  # Get current branch
+  BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+  # Local and remote commit hashes
+  LOCAL=$(git rev-parse @)
+  REMOTE=$(git rev-parse @{u})
+
+  # Pull if remote has new commits and local changes are committed
+  if [ "$LOCAL" != "$REMOTE" ]; then
+    if git diff --quiet && git diff --cached --quiet; then
+      echo "Remote changes detected. Pulling..."
+      git pull --ff-only
+    else
+      echo "Remote changes detected, but local uncommitted changes exist. Skipping pull."
+    fi
+  else
+    echo "No remote changes."
+  fi
+
+  # Push local commits if any
+  if ! git diff --quiet && ! git diff --cached --quiet; then
+    echo "Local changes detected. Committing and pushing..."
+    git add .
+    git commit -m "auto update"
+    git push
+  else
+    echo "No local changes to push."
+  fi
+
+  # Wait before checking again
+  sleep $INTERVAL
 done
