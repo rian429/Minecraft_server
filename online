@@ -1,13 +1,5 @@
-#!/bin/bash
-
-# Infinite loop
+#!/usr/bin/env bash
 while true; do
-    # Generate a random string (8 characters)
-    RANDOM_STRING=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 8)
-    
-    # Print the random string
-    echo "$RANDOM_STRING"
-    
-    # Wait 5 seconds
-    sleep 5
+  curl -fsS https://api.github.com >/dev/null 2>&1
+  sleep 240
 done
